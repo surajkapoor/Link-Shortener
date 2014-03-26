@@ -1,0 +1,17 @@
+<html>
+	<center>Link Shortener</center>
+	<br>
+	<form method = "POST">
+		<textarea name="url" type="text" placeholder = "Enter your URL here..."style = "width:600px; height: 1.5em;font-size: 14px; display:block; margin-left:auto; margin-right:auto;"></textarea><br>
+		<center><button type="submit">Generate URL</button></center>
+	</form>
+	<center>
+	{% if short_url %}
+		{{ short_url }} <br><a href = {{ short_url }}>click here</a>
+	{% endif %}	
+
+	{% if response %}
+		{{ response }}
+	{% endif %}	
+	</center>	
+</html>
