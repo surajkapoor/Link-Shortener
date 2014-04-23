@@ -19,6 +19,8 @@ session = Session()
 
 alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+cached_entry = {}
+
 def numb_to_string(num):
 	output = []
 	while num:
@@ -44,13 +46,18 @@ def main():
 			if find_long_url:
 				short_url = find_long_url.short_url
 				return render_template("link.html", short_url = short_url)
+			elif "last_entry_number" in cached_entry:	
+				last_entry_number = cached_entry["last_entry_number"]
 			else:	
-				entry_number = session.query(Links).order_by(Links.entry_number.desc()).first()
-				short_url = request.url_root + numb_to_string(int(entry_number.entry_number) + 1)
-				link = Links(long_url = long_url, short_url = short_url, metrics = "None")
-				db.session.add(link)
-				db.session.commit()
-				return render_template("link.html", short_url = short_url)
+				last_entry_number = session.query(Links).order_by(Links.entry_number.desc()).first()
+				last_entry_number = last_entry_number.entry_number	
+			new_entry_number = last_entry_number + 1
+			short_url = request.url_root + numb_to_string(int(new_entry_number))
+			cached_entry["last_entry_number"] = new_entry_number
+			link = Links(long_url = long_url, short_url = short_url, metrics = "None")
+			db.session.add(link)
+			db.session.commit()
+			return render_template("link.html", short_url = short_url)
 		else:
 			return render_template("link.html", response = "This is a bad URL")		
 
