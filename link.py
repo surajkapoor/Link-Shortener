@@ -10,7 +10,7 @@ import pdb
 
 app = Flask(__name__)
 
-engine = create_engine('postgresql+psycopg2://surajkapoor:wilshere10@localhost/link_shortener')
+engine = create_engine('postgresql+psycopg2://surajkapoor:xxxxxxxxxxx@localhost/link_shortener')
 app.config['SQLALCHEMY_DATABASE_URI'] = engine
 app.secret_key = "secret!"
 
